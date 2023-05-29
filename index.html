@@ -6,97 +6,59 @@
 
   </div>
 
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <!-- <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script> -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.getElementById("root");
 
 
+    /* Rendering Main component to HTML */
     const render = () => {
       ReactDOM.render(<App />, root);
     };
 
 
-    const MinutesToHours = () => {
-      const [amount, setAmount] = React.useState(0);
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-      const reset = () => {
-        setAmount(0);
-      }
-      const onFlip = () => {
-        reset();
-        setInverted(current => !current);
-      }
-      return (
-        <div>
-          <h3>Minutes To Hours</h3>
-          <label htmlFor="amount">amount</label>
-          <input value={inverted ? amount * 60 : amount} id="minutes" placeholder="Minutes" type="number" onChange={onChange} disabled={inverted === true} />
-          <label htmlFor="hours">Hours</label>
-          <input value={inverted ? amount : Math.round(amount / 60)} id="hours" placeholder="Hours" type="number" disabled={inverted === false} onChange={onChange} />
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
-      );
-    };
-
-    const KmToMiles = () => {
-
-      const [amount, setAmount] = React.useState(0);
-      const [inverted, setInverted] = React.useState(false);
-
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-
-      const reset = () => {
-        setAmount(0);
-      }
-
-      const onInvert = () => {
-        reset();
-        setInverted(current => !current);
-      }
-
-      return (
-        <div>
-          <h3>Kilomiters To Miles</h3>
-          <label htmlFor="km">amount</label>
-          <input id="km" value={inverted ? amount / 1.609 : amount} onChange={onChange} disabled={inverted === true} placeholder="Km" />
-          <label htmlFor="miles">miles</label>
-          <input id="miles" value={inverted ? amount : amount * 1.609} onChange={onChange} disabled={inverted === false} placeholder="Miles" />
-          <button onClick={reset}>Reset</button>
-          <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
-      )
-    };
-
+    /* Main component */
     const App = () => {
-      const [index, setIndex] = React.useState("xx");
+      const [value, setValue] = React.useState("Save changes");
 
-      const onChange = (event) => {
-        setIndex(event.target.value);
-
-      };
+      const changeValue = () => {
+        setValue("Revert Changes");
+      }
 
       return (
         <div>
-          <h1 id="title" >Super Converter</h1>
-          <select onChange={onChange} >
-            <option value="xx">Select units</option>
-            <option value="0">Minutes 2 Hours</option>
-            <option value="1">Km 2 Miles</option>
-          </select>
-          {index === "xx" ? "Please select your units" : null}
-          {index === "0" ? <MinutesToHours /> : null}
-          {index === "1" ? <KmToMiles /> : null}
+          <Btn text={value} onClick={changeValue} fontSize={18} />
+          <Btn text="Continues" />
         </div>
       );
     };
+
+
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
+    /* Common component: Button form */
+    function Btn({ text, onClick, fontSize = 16 }) {
+      return (
+        <button
+          onClick={onClick}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            border: 0,
+            borderRadius: 10,
+            padding: "10px 20px",
+            fontSize: fontSize,
+          }}
+        >{text}
+        </button>
+      );
+    }
 
     render();
   </script>
